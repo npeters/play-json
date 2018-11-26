@@ -7,11 +7,15 @@ package play.api.libs.json
 /**
  * A JSON validation error representation.
  */
-case class JsonValidationError(messages: Seq[String], args: Any*) {
-  lazy val message = messages.last
+class JsonValidationError(lazyMessages: () => Seq[String], val args: Any*) {
+  lazy val message = lazyMessages().last
+  def messages: Seq[String] = lazyMessages()
 }
 
 object JsonValidationError {
-  def apply(message: String, args: Any*): JsonValidationError =
-    JsonValidationError(Seq(message), args: _*)
+  def apply(message: => String, args: Any*): JsonValidationError =
+    new JsonValidationError(() => Seq(message), args: _*)
+
+  def apply(messages: Seq[String], args: Any*): JsonValidationError =
+    new JsonValidationError(() => messages, args: _*)
 }
