@@ -12,6 +12,8 @@ import sbtcrossproject.CrossType
 
 resolvers ++= DefaultOptions.resolvers(snapshot = true)
 
+
+
 val specs2 = Seq(
   "org.specs2" %% "specs2-core"  % "4.9.4" % Test,
   "org.specs2" %% "specs2-junit" % "4.9.4" % Test,
@@ -81,6 +83,8 @@ libraryDependencies in ThisBuild ++= Seq(
 
 // Customise sbt-dynver's behaviour to make it work with tags which aren't v-prefixed
 dynverVTagPrefix in ThisBuild := false
+version in ThisBuild ~= ( _ + "-canalplus")
+
 
 // Sanity-check: assert that version comes from a tag (e.g. not a too-shallow clone)
 // https://github.com/dwijnand/sbt-dynver/#sanity-checking-the-version
